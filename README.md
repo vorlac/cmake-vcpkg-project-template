@@ -32,4 +32,4 @@ By default the program will be built to:
 
     ./out/build/{compiler}-{build type}/myprogram[.exe]
 
-You can modify the config files `.vs/launch.json` or `.vs/launch.vs.json` to alter the command that's run when the debugger is invoked or to add arguments to the command (as well as a handful of additional options)
+You can modify the config files `.vscode/launch.json` or `.vs/launch.vs.json` to alter the command that's run when the debugger is invoked or to add arguments to the command (as well as a handful of additional options)
