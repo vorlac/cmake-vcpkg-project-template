@@ -1,0 +1,57 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "debug [vsdbg]",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "requireExactSource": true,
+      "symbolOptions": {
+        "searchPaths": [
+          "${workspaceFolder}"
+        ],
+        "searchMicrosoftSymbolServer": true
+      },
+      "program": "${command:cmake.launchTargetPath}",
+      "args": [
+        "--console",
+        "info",
+        "--log",
+        "error"
+      ],
+      "cwd": "${workspaceFolder}",
+      "internalConsoleOptions": "openOnSessionStart",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "debug [gdb]",
+      "type": "cppdbg",
+      "request": "launch",
+      "MIMode": "gdb",
+      "linux": {
+        "program": "${command:cmake.launchTargetPath}",
+        "miDebuggerPath": "/usr/bin/gdb"
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "internalConsoleOptions": "openOnSessionStart",
+      "launchCompleteCommand": "exec-run",
+      "targetArchitecture": "x64",
+      "externalConsole": false,
+      "symbolLoadInfo": {
+        "loadAll": true,
+        "exceptionList": "",
+      },
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}

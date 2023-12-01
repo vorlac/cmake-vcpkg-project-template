@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "josetr.cmake-language-support-vscode",
+        "twxs.cmake",
+    ]
+}

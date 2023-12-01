@@ -1,0 +1,24 @@
+{
+  "BuildIncremental": {
+    "Enabled": false
+  },
+  "ExcludedItems": [
+    ".git*",
+    ".idea",
+    ".clang-*",
+    ".vscode",
+    "*.md",
+    "!.out*",
+    "!.out/*",
+    "!.out/build/*",
+    "!.clang-format",
+    "!README.md"
+  ],
+  "Indexing": {
+    "Enabled": true
+  },
+  "Logger": {
+    "EnableVsLogging": false,
+    "LoggingLevel": "Info"
+  }
+}

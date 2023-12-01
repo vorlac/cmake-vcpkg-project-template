@@ -1,0 +1,7 @@
+src/* text=auto eol=lf
+data/* text=auto eol=lf
+cmake/* text=auto eol=lf
+.vscode/* text=auto eol=lf
+.vs/* text=auto eol=lf
+./*.* text=auto eol=lf
+.git* text=auto eol=lf
