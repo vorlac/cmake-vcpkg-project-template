@@ -5,6 +5,8 @@
   "version": "0.1.0",
   "dependencies": [
     "fmt",
-    "openssl"
+    "glfw3",
+    "glad",
+    "linmath"
   ]
 }
