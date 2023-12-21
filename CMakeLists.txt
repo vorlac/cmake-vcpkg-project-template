@@ -24,7 +24,7 @@ project(myprogram
 option(
   AUTOFORMAT_SRC_ON_CONFIGURE
     "If enabled, clang-format will be used to format all sources in src/ during configuration"
-      OFF # ON
+      ON
 )
 
 string(TOLOWER "${CMAKE_SYSTEM_NAME}" host_os)
@@ -36,8 +36,22 @@ set(compiler_is_msvc "$<CXX_COMPILER_ID:MSVC>")
 set(compiler_is_gnu "$<CXX_COMPILER_ID:GNU>")
 set(compiler_is_clang "$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>>")
 
+set(FORCE_STATIC_VCRT ON)
+set(BUILD_SHARED_LIBS OFF)
+
+# SDL3 build options
+set(SDL_LIBC OFF)
+set(SDL_VULKAN OFF)
+set(SDL_SHARED OFF)
+set(SDL_STATIC ON)
+
+# SDL3 test program targets
+set(SDL_TESTS OFF)
+set(SDL_TEST_LIBRARY OFF)
+
+
 find_package(fmt CONFIG REQUIRED)
-find_package(zydis CONFIG REQUIRED)
+find_package(SDL2 CONFIG REQUIRED)
 
 file(GLOB_RECURSE
   project_sources
@@ -96,9 +110,17 @@ target_include_directories(${PROJECT_NAME}
   PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src"
 )
 
+target_link_options(${PROJECT_NAME}
+  PRIVATE
+    $<${compiler_is_msvc}:
+      /subsystem:console
+    >
+)
+
 target_link_libraries(${PROJECT_NAME}
   PRIVATE fmt::fmt
-  PRIVATE Zydis::Zydis
+  PRIVATE SDL2::SDL2main
+  PRIVATE SDL2::SDL2-static
 )
 
 if (AUTOFORMAT_SRC_ON_CONFIGURE MATCHES ON)
@@ -115,6 +137,13 @@ set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 set_property(TARGET ${PROJECT_NAME}
   PROPERTY VS_DEBUGGER_ENVIRONMENT
     "PATH=${CMAKE_CURRENT_INSTALL_DIR}/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}"
+)
+
+add_custom_command(TARGET ${PROJECT_NAME}
+  PRE_BUILD COMMAND
+    ${CMAKE_COMMAND} -E copy_if_different
+      ${CMAKE_CURRENT_SOURCE_DIR}/resources
+      $<TARGET_FILE_DIR:${PROJECT_NAME}>/resources
 )
 
 include(cmake-utils)
