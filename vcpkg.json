@@ -5,6 +5,9 @@
   "version": "0.1.0",
   "dependencies": [
     "fmt",
-    "openssl"
+    "bullet3",
+    "rmlui",
+    "sdl2",
+    "sdl2-image"
   ]
 }

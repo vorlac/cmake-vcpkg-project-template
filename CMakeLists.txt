@@ -24,7 +24,7 @@ project(myprogram
 option(
   AUTOFORMAT_SRC_ON_CONFIGURE
     "If enabled, clang-format will be used to format all sources in src/ during configuration"
-      OFF # ON
+      ON
 )
 
 string(TOLOWER "${CMAKE_SYSTEM_NAME}" host_os)
@@ -36,14 +36,35 @@ set(compiler_is_msvc "$<CXX_COMPILER_ID:MSVC>")
 set(compiler_is_gnu "$<CXX_COMPILER_ID:GNU>")
 set(compiler_is_clang "$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>>")
 
+set(FORCE_STATIC_VCRT ON)
+set(BUILD_SHARED_LIBS OFF)
+
+# SDL3 build options
+set(SDL_LIBC OFF)
+set(SDL_SHARED OFF)
+set(SDL_STATIC ON)
+set(SDL_VULKAN ON)
+
+# SDL3 test program targets
+set(SDL_TESTS OFF)
+set(SDL_TEST_LIBRARY OFF)
+
+# disable building RmlUi
+# example programs
+set(BUILD_SAMPLES OFF)
+
+find_package(Bullet CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
-find_package(OpenSSL REQUIRED)
+find_package(RmlUi CONFIG REQUIRED)
+find_package(SDL2 CONFIG REQUIRED)
+find_package(SDL2_image CONFIG REQUIRED)
 
 file(GLOB_RECURSE
   project_sources
     CONFIGURE_DEPENDS
       "${CMAKE_CURRENT_SOURCE_DIR}/src/*.[hc]"
       "${CMAKE_CURRENT_SOURCE_DIR}/src/*.[hc]pp"
+      "/Backends/RmlUi_Platform_SDL.cpp"
 )
 
 add_executable(${PROJECT_NAME}
@@ -61,9 +82,8 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
   NOMINMAX
 
   $<${compiler_is_msvc}:
-      WIN32_LEAN_AND_MEAN
-      VC_EXTRALEAN
-
+      # WIN32_LEAN_AND_MEAN
+      # VC_EXTRALEAN
       $<$<CONFIG:Debug>:
           # debug only msvc defs
       >
@@ -97,9 +117,12 @@ target_include_directories(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
+  PRIVATE ${BULLET_LIBRARIES}
   PRIVATE fmt::fmt
-  PRIVATE OpenSSL::SSL
-  PRIVATE OpenSSL::Crypto
+  PRIVATE RmlCore
+  PRIVATE RmlDebugger
+  PRIVATE SDL2::SDL2-static
+  PRIVATE SDL2_image::SDL2_image-static
 )
 
 if (AUTOFORMAT_SRC_ON_CONFIGURE MATCHES ON)
