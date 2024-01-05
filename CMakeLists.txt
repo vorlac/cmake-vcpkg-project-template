@@ -37,7 +37,12 @@ set(compiler_is_gnu "$<CXX_COMPILER_ID:GNU>")
 set(compiler_is_clang "$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>>")
 
 find_package(fmt CONFIG REQUIRED)
-find_package(OpenSSL REQUIRED)
+find_package(jansson CONFIG REQUIRED)
+find_package(Lua REQUIRED)
+find_package(SDL2 CONFIG REQUIRED)
+find_package(SDL2_image CONFIG REQUIRED)
+find_package(SDL2_mixer CONFIG REQUIRED)
+find_package(SDL2_ttf CONFIG REQUIRED)
 
 file(GLOB_RECURSE
   project_sources
@@ -94,12 +99,18 @@ target_compile_options(${PROJECT_NAME} PRIVATE
 
 target_include_directories(${PROJECT_NAME}
   PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src"
+  PRIVATE ${LUA_INCLUDE_DIR}
 )
 
 target_link_libraries(${PROJECT_NAME}
   PRIVATE fmt::fmt
-  PRIVATE OpenSSL::SSL
-  PRIVATE OpenSSL::Crypto
+  PRIVATE jansson::jansson
+  PRIVATE ${LUA_LIBRARIES}
+  PRIVATE $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
+  PRIVATE $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
+  PRIVATE $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>
+  PRIVATE $<IF:$<TARGET_EXISTS:SDL2_mixer::SDL2_mixer>,SDL2_mixer::SDL2_mixer,SDL2_mixer::SDL2_mixer-static>
+  PRIVATE $<IF:$<TARGET_EXISTS:SDL2_ttf::SDL2_ttf>,SDL2_ttf::SDL2_ttf,SDL2_ttf::SDL2_ttf-static>
 )
 
 if (AUTOFORMAT_SRC_ON_CONFIGURE MATCHES ON)
