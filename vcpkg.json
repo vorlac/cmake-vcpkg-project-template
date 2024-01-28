@@ -5,6 +5,10 @@
     "version": "0.1.0",
     "dependencies": [
         "fmt",
-        "sdl2"
+        "sdl2",
+        "sdl2-image",
+        "sdl2-ttf",
+        "sdl2-mixer",
+        "sdl2-net"
     ]
 }
