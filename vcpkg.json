@@ -1,10 +1,14 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
-  "documentation": "https://github.com/microsoft/vcpkg/blob/master/docs/users/manifests.md",
-  "name": "project",
-  "version": "0.1.0",
-  "dependencies": [
-    "fmt",
-    "sdl2"
-  ]
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+    "documentation": "https://github.com/microsoft/vcpkg/blob/master/docs/users/manifests.md",
+    "name": "project",
+    "version": "0.1.0",
+    "dependencies": [
+        "fmt",
+        "sdl2",
+        "sdl2-image",
+        "sdl2-ttf",
+        "sdl2-mixer",
+        "sdl2-net"
+    ]
 }
