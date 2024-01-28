@@ -36,20 +36,32 @@ set(compiler_is_msvc "$<CXX_COMPILER_ID:MSVC>")
 set(compiler_is_gnu "$<CXX_COMPILER_ID:GNU>")
 set(compiler_is_clang "$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>>")
 
-set(FORCE_STATIC_VCRT ON)
-set(BUILD_SHARED_LIBS OFF)
+set(FORCE_STATIC_VCRT OFF)
+set(BUILD_SHARED_LIBS ON)
 
 # SDL3 build options
 set(SDL_LIBC OFF)
-set(SDL_VULKAN OFF)
-set(SDL_SHARED OFF)
+set(SDL_VULKAN ON)
+set(SDL_SHARED ON)
 set(SDL_STATIC ON)
+set(SDL2IMAGE_BUILD_SHARED_LIBS ON)
 
-# SDL3 test program targets
 set(SDL_TESTS OFF)
 set(SDL_TEST_LIBRARY OFF)
 
+set(SDL2IMAGE_AVIF ON)
+set(SDL2IMAGE_BMP ON)
+set(SDL2IMAGE_GIF ON)
+set(SDL2IMAGE_JPG ON)
+set(SDL2IMAGE_PNG ON)
+set(SDL2IMAGE_TIF ON)
+set(SDL2IMAGE_JPG_SAVE ON)
+set(SDL2IMAGE_PNG_SAVE ON)
+set(SDL2IMAGE_VENDORED OFF)
 
+find_package(PkgConfig REQUIRED)
+
+find_package(PNG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
 find_package(SDL2_image CONFIG REQUIRED)
@@ -123,6 +135,7 @@ target_link_options(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
   PRIVATE fmt::fmt
+  PRIVATE PNG::PNG
   PRIVATE $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
   PRIVATE $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
   PRIVATE $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>

@@ -19,6 +19,13 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
+    auto flags = IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP;
+    if (IMG_Init(flags) != flags)
+    {
+        cerr << "IMG_Init Error: " << SDL_GetError() << endl;
+        return EXIT_FAILURE;
+    }
+
     SDL_Window* win = SDL_CreateWindow("Hello World!", 100, 100, 620, 387, SDL_WINDOW_SHOWN);
     if (win == nullptr)
     {
