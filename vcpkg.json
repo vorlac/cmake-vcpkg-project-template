@@ -9,6 +9,7 @@
         "sdl2-image",
         "sdl2-ttf",
         "sdl2-mixer",
-        "sdl2-net"
+        "sdl2-net",
+        "pkgconf"
     ]
 }
