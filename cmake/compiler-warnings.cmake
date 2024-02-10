@@ -28,15 +28,11 @@ target_compile_options(${PROJECT_NAME}
             -Wno-unused-parameter
             -Wno-c++98-compat
             -Wno-c++98-compat-pedantic
-
-            # prints extra hardening suggestions for unsafe buffer access
-            -fsafe-buffer-usage-suggestions
         >
 
         # Clang only
         $<${compiler_is_clang}:
             -Wimplicit-fallthrough
-
         >
 
         # GNU only
