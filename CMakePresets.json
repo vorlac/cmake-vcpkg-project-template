@@ -83,9 +83,9 @@
         "VCPKG_TARGET_TRIPLET": "x64-linux"
       },
       "condition": {
-        "type": "equals",
+        "type": "notEquals",
         "lhs": "${hostSystemName}",
-        "rhs": "Linux"
+        "rhs": "Windows"
       }
     },
     {
@@ -117,16 +117,13 @@
       "inherits": "default",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_C_COMPILER": "clang-cl",
-        "CMAKE_CXX_COMPILER": "clang-cl",
-        "VCPKG_TARGET_TRIPLET": "x64-windows-static-md"
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
       },
-      "vendor": {
-        "microsoft.com/VisualStudioSettings/CMake/1.0": {
-          "enableClangTidyCodeAnalysis": true,
-          "intelliSenseMode": "windows-clang-x64",
-          "intelliSenseOptions": {"useCompilerDefaults": false}
-        }
+      "condition": {
+        "type": "notEquals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
       }
     },
     {
@@ -147,6 +144,52 @@
     },
     {
       "displayName": "Clang RelWithDebInfo",
+      "name": "clang-relwdebinfo",
+      "inherits": "clang",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "clang-cl",
+      "inherits": "default",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang-cl",
+        "CMAKE_CXX_COMPILER": "clang-cl",
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static-md"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "enableClangTidyCodeAnalysis": true,
+          "intelliSenseMode": "windows-clang-x64",
+          "intelliSenseOptions": {"useCompilerDefaults": false}
+        }
+      }
+    },
+    {
+      "displayName": "ClangCL Debug",
+      "name": "clang-debug",
+      "inherits": "clang",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "displayName": "ClangCL Release",
+      "name": "clang-release",
+      "inherits": "clang",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "displayName": "ClangCL RelWithDebInfo",
       "name": "clang-relwdebinfo",
       "inherits": "clang",
       "cacheVariables": {
