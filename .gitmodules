@@ -1,3 +1,6 @@
 [submodule "vcpkg"]
 	path = extern/vcpkg
 	url = https://github.com/microsoft/vcpkg
+[submodule "SchemaScanLib/deps/hashlib2plus"]
+	path = SchemaScanLib/deps/hashlib2plus
+	url = https://github.com/mbeards/hashlib2plus.git
