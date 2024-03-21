@@ -15,10 +15,10 @@ Basic example CMake + VCPKG C++ template to easily build and debug a project eas
 ### How to use this repo as a base for your project 
 
 This repo is set up as a github template, so no need to star, fork, or clone. 
-Use the "Use this template" button shown on the main github page for this repo, the select "create a repo".
+Use the "Use this template" button shown on the main github page for this repo, the select "create a new repository".
 This will copy the full contents of this repo into a new repo in your github account. With this approach you'll get a complete copy of this repo with all of the history stripped out of it.
 
-This repo includes a handful of branches that provide working examples using a variety of different 3rd party libraries. If you want these branches to be included in the repo that ends up being created in your github account, you need to check the option (in the "create a repo" dialog) that tells github to include all branches. If you select that option you'll have all of the same branches included in the repo created in your account and you can run `git checkout <branch>` to use it.
+This repo includes a handful of branches that provide working examples using a variety of different 3rd party libraries. If you want these branches to be included in the repo that ends up being created in your github account, you need to check the "include all branches" option (in the "create a new repository" dialog). If you select that option you'll have all of the same branches included in the repo created in your account and you can run `git checkout <branch>` to use it.
 
 ### Adding / modifying dependencies included with vcpkg
 
