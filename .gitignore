@@ -1,12 +1,5 @@
 .out/
 
-.sconsign.dblite
-
-*.translation
-*.obj
-
-**/bin/*
-
 .vs/**
 !.vs/launch.vs.json
 !.vs/VSWorkspaceSettings.json
