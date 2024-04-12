@@ -2,10 +2,10 @@
 #include <iostream>
 #include <string_view>
 
+#include <Zydis/MetaInfo.h>
 #include <fmt/color.h>
 #include <fmt/format.h>
 #include <fmt/std.h>
-#include <zydis/MetaInfo.h>
 
 int main(int argc, char** argv)
 {
