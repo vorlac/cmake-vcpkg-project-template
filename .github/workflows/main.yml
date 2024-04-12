@@ -11,8 +11,9 @@ jobs:
       - name: '[windows-latest] => cmake - configure'
         run: >
           cmake -B ${{ github.workspace }}/.out
-          -DCMAKE_CXX_COMPILER=cp
+          -DCMAKE_CXX_COMPILER=cl
           -DCMAKE_C_COMPILER=cl
+          -DVCPKG_TARGET_TRIPLET=x64-windows-static-md
           -DCMAKE_BUILD_TYPE=Debug
           -S ${{ github.workspace }}
           -G Ninja
