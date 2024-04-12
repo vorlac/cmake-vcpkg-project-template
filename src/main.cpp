@@ -13,5 +13,6 @@ int main(int argc, char** argv)
     fmt::print(fmt::emphasis::blink | fmt::fg(fmt::color::coral), "{}\n", hi);
     auto test = ZydisCategoryGetString(ZydisInstructionCategory::ZYDIS_CATEGORY_AES);
     fmt::print(fmt::emphasis::underline | fmt::fg(fmt::color::beige), "Test str: {}\n", test);
+
     return 0;
 }
