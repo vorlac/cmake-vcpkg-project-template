@@ -113,6 +113,45 @@
             }
         },
         {
+            "name": "gcc-windows",
+            "inherits": "default",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "VCPKG_TARGET_TRIPLET": "x64-mingw-static"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "displayName": "GCC Debug",
+            "name": "gcc-debug-windows",
+            "inherits": "gcc-windows",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "displayName": "GCC Release",
+            "name": "gcc-release-windows",
+            "inherits": "gcc-windows",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "displayName": "GCC RelWithDebInfo",
+            "name": "gcc-relwdebinfo-windows",
+            "inherits": "gcc-windows",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+            }
+        },
+        {
             "name": "clang",
             "inherits": "default",
             "hidden": true,
