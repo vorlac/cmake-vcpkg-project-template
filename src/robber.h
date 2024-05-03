@@ -3,256 +3,263 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <string>
+
 #include "city.h"
 #include "jewel.h"
+
 using namespace std;
 
 const int MAX_CAPACITY = 20;
 
-template <class Loot>
-class Robber
-{
-private:
-    int id;
-    int xPos;
-    int yPos;
-    Loot bag[MAX_CAPACITY];
-    int bagSize;
-    static int totalWorth;
-    bool isActive;
-    bool isGreedy;
-    bool hasCopy;
-
-public:
-    Robber();
-    Robber(int id, int xPos, int yPos);
-    Robber(const Robber &other);
-    void pickUpLoot(const Loot &loot, const City &city, int xPos, int yPos);
-    Loot operator--();
-    void move(City &city);
-    static int getTotalWorth();
-    int getxPos();
-    int getyPos();
-    void setCopy(bool copy);
-    bool getCopy();
+enum Direction {
+    North,
+    NorthEast,
+    East,
+    SouthEast,
+    South,
+    SouthWest,
+    West,
+    NorthWest
 };
 
 template <class Loot>
-Robber<Loot>::Robber() : id(0), xPos(0), yPos(0), hasCopy(0), bagSize(0){};
-
-template <class Loot>
-Robber<Loot>::Robber(int id, int xPos, int yPos) : id(id), xPos(xPos), yPos(yPos), hasCopy(0), bagSize(0){};
-
-template <class Loot>
-Robber<Loot>::Robber(const Robber &other) : id(other.id), xPos(other.xPos), yPos(other.yPos), hasCopy(0), bagSize(0){};
-
-template <class Loot>
-int Robber<Loot>::totalWorth = 0;
-
-template <class Loot>
-void Robber<Loot>::pickUpLoot(const City &city, int xPos, int yPos)
+class Robber
 {
-
-    if (bagSize >= 20)
+public:
+    Robber()
+        : m_id(Robber<Loot>::curr_robber_id++)
+        , m_xPos(rand() % COLS)
+        , m_yPos(rand() % ROWS)
+        , m_hasCopy(false)
+        , m_bagSize(0)
     {
-        cout << "The robber's bag is full! Cannot pick up loot.\n";
-        return;
     }
 
-    Loot newLoot;
-    if (city.getGridCell(xPos, yPos) == 'J')
+    Robber(const Robber& other)
+        : m_id(other.m_id)
+        , m_xPos(other.m_xPos)
+        , m_yPos(other.m_yPos)
+        , m_hasCopy(false)
+        , m_bagSize(0)
     {
-        int x = ROWS - xPos;
-        int y = yPos + 1;
-        newLoot = Loot(x, y);
-        bag[bagSize++] = newLoot;
-
-        totalWorth += newLoot.getValue();
-
-        cout << "Robber " << id << "picked up a loot worth $" << newLoot.getValue() << " at position (" << y << ", " << x << "). " << endl;
     }
-}
 
-template <class Loot>
-int Robber<Loot>::getTotalWorth()
-{
-    return totalWorth;
-}
-
-template <class Loot>
-Loot Robber<Loot>::operator--()
-{
-    if (bagSize > 0)
+    Robber(int id, int xPos, int yPos)
+        : m_id(id)
+        , m_xPos(xPos)
+        , m_yPos(yPos)
+        , m_hasCopy(false)
+        , m_bagSize(0)
     {
-        bagSize -= 1;
+    }
 
-        Loot temp = bag[0];
-
-        for (int i = 0; i < bagSize; i++)
+    void pickUpLoot(const Loot& loot, const City& city, int xPos, int yPos)
+    {
+        if (m_bagSize >= 20)
         {
-            bag[i] = bag[i + 1];
-        }
-    }
-
-    return bag[0];
-}
-
-template <class Loot>
-void Robber<Loot>::move(City &city)
-{
-
-    Robber<Loot> robber;
-    bool robberMoved = false;
-    bool isActive = true;
-
-    int xPos = rand() % 11;
-    int yPos = rand() % 13;
-
-    int direction = rand() % 8;
-    while (!robberMoved && isActive)
-    {
-        switch (direction)
-        {
-        case 0:
-            if (yPos < ROWS - 1 && xPos > 0)
-            {
-                cout << "Robber moved NE." << endl;
-                city.setGridCell(xPos, yPos, '.');
-                ++yPos;
-                --xPos;
-                robberMoved = true;
-            }
-            break;
-        case 1:
-            if (yPos < ROWS - 1)
-            {
-                cout << "Robber moved E." << endl;
-                city.setGridCell(xPos, yPos, '.');
-                ++yPos;
-                robberMoved = true;
-            }
-            break;
-        case 2:
-            if (yPos < ROWS - 1 && xPos < COLS - 1)
-            {
-                cout << "Robber moved SE." << endl;
-                city.setGridCell(xPos, yPos, '.');
-                ++yPos;
-                ++xPos;
-                robberMoved = true;
-            }
-            break;
-        case 3:
-            if (xPos > 0)
-            {
-                cout << "Robber moved N." << endl;
-                city.setGridCell(xPos, yPos, '.');
-                --xPos;
-                robberMoved = true;
-            }
-            break;
-        case 4:
-            if (xPos < COLS - 1)
-            {
-                cout << "Robber moved S." << endl;
-                city.setGridCell(xPos, yPos, '.');
-                ++xPos;
-                robberMoved = true;
-            }
-            break;
-        case 5:
-            if (yPos > 0 && xPos > 0)
-            {
-                cout << "Robber moved NW." << endl;
-                city.setGridCell(xPos, yPos, '.');
-                --yPos;
-                --xPos;
-                robberMoved = true;
-            }
-            break;
-        case 6:
-            if (yPos > 0)
-            {
-                cout << "Robber moved W." << endl;
-                city.setGridCell(xPos, yPos, '.');
-                --yPos;
-                robberMoved = true;
-            }
-            break;
-        case 7:
-            if (yPos > 0 && xPos < COLS - 1)
-            {
-                cout << "Robber moved SW." << endl;
-                city.setGridCell(xPos, yPos, '.');
-                --yPos;
-                ++xPos;
-                robberMoved = true;
-            }
-            break;
-        default:
-            break;
-        }
-    }
-
-    if (robberMoved)
-    {
-        if (city.getGridCell(xPos, yPos) == 'J')
-        {
-            robber.pickUpLoot(Loot(xPos, yPos), city, xPos, yPos);
-        }
-        city.setGridCell(xPos, yPos, 'R');
-    }
-
-    if (robberMoved && rand() % 100 < 60 && bagSize > 0)
-    {
-
-        cout << "The robber tripped!!!" << endl;
-        Loot droppedLoot = --robber;
-
-        if (city.getGridCell(xPos, yPos) == '.')
-        {
-            city.setGridCell(xPos, yPos, 'J');
+            cout << "The robber's bag is full! Cannot pick up loot."
+                 << endl;
             return;
         }
-        else
+
+        Loot newLoot;
+        if (city.getGridCell(xPos, yPos) == "J ")
         {
-            for (int i = xPos - 1; i <= xPos + 1; i++)
+            int x = ROWS - xPos;
+            int y = yPos + 1;
+            newLoot = Loot(x, y);
+            m_bag[m_bagSize++] = newLoot;
+
+            m_totalWorth += newLoot.getValue();
+
+            cout << "Robber " << m_id
+                 << " picked up a loot worth $" << newLoot.getValue()
+                 << " at position (" << y << ", " << x << "). "
+                 << endl;
+        }
+    }
+
+    Loot operator--()
+    {
+        if (m_bagSize > 0)
+        {
+            --m_bagSize;
+
+            Loot temp = m_bag[0];
+            m_totalWorth -= temp.getValue();
+
+            for (int i = 0; i < m_bagSize && i < MAX_CAPACITY - 1; i++)
+                m_bag[i] = m_bag[i + 1];
+
+            return temp;
+        }
+
+        return Loot{};
+    }
+
+    void move(City& city)
+    {
+        m_isActive = true;
+
+        int prev_x{ m_xPos };
+        int prev_y{ m_yPos };
+
+        bool robberMoved = false;
+        Direction dir{ static_cast<Direction>(rand() % 8) };
+
+        while (!robberMoved && m_isActive)
+        {
+            switch (dir)
             {
-                for (int j = yPos - 1; j < yPos + 1; j++)
-                {
-                    if (city.getGridCell(i, j) == '.')
+                case Direction::NorthEast:
+                    if (m_xPos < COLS - 1 && m_yPos > 0)
                     {
-                        city.setGridCell(i, j, 'J');
-                        return;
+                        cout << "Robber moved NE." << endl;
+                        city.setGridCell(m_xPos, m_yPos, "x ");
+                        ++m_xPos;
+                        --m_yPos;
+                        robberMoved = true;
                     }
-                }
+                    break;
+                case Direction::East:
+                    if (m_xPos < COLS - 1)
+                    {
+                        cout << "Robber moved E." << endl;
+                        city.setGridCell(m_xPos, m_yPos, "x ");
+                        ++m_xPos;
+                        robberMoved = true;
+                    }
+                    break;
+                case Direction::SouthEast:
+                    if (m_yPos < ROWS - 1 && m_xPos < COLS - 1)
+                    {
+                        cout << "Robber moved SE." << endl;
+                        city.setGridCell(m_xPos, m_yPos, "x ");
+                        ++m_xPos;
+                        ++m_yPos;
+                        robberMoved = true;
+                    }
+                    break;
+                case Direction::North:
+                    if (m_yPos > 0)
+                    {
+                        cout << "Robber moved N." << endl;
+                        city.setGridCell(m_xPos, m_yPos, "x ");
+                        --m_yPos;
+                        robberMoved = true;
+                    }
+                    break;
+                case Direction::South:
+                    if (m_yPos < ROWS - 1)
+                    {
+                        cout << "Robber moved S." << endl;
+                        city.setGridCell(m_xPos, m_yPos, "x ");
+                        ++m_yPos;
+                        robberMoved = true;
+                    }
+                    break;
+                case Direction::NorthWest:
+                    if (m_yPos > 0 && m_xPos > 0)
+                    {
+                        cout << "Robber moved NW." << endl;
+                        city.setGridCell(m_xPos, m_yPos, "x ");
+                        --m_xPos;
+                        --m_yPos;
+                        robberMoved = true;
+                    }
+                    break;
+                case Direction::West:
+                    if (m_xPos > 0)
+                    {
+                        cout << "Robber moved W." << endl;
+                        city.setGridCell(m_xPos, m_yPos, "x ");
+                        --m_xPos;
+                        robberMoved = true;
+                    }
+                    break;
+                case Direction::SouthWest:
+                    if (m_yPos < ROWS - 1 && m_xPos > 0)
+                    {
+                        cout << "Robber moved SW." << endl;
+                        city.setGridCell(m_xPos, m_yPos, "x ");
+                        ++m_yPos;
+                        --m_xPos;
+                        robberMoved = true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            m_isActive = false;
+        }
+
+        if (robberMoved)
+        {
+            if (city.getGridCell(m_xPos, m_yPos) == "J ")
+                this->pickUpLoot(Loot(m_xPos, m_yPos), city, m_xPos, m_yPos);
+            city.setGridCell(prev_x, prev_y, "x ");
+            auto id_str{ to_string(m_id) };
+            if (id_str.size() == 1)
+                id_str = "0" + id_str;
+            city.setGridCell(m_xPos, m_yPos, id_str);
+        }
+
+        const bool robber_tripped{ rand() % 100 < 10 };
+        if (robberMoved && robber_tripped && m_bagSize > 0)
+        {
+            Loot droppedLoot = --(*this);
+            cout << "The robber tripped! (lost $"
+                 << droppedLoot.getValue() << ")"
+                 << endl;
+
+            city.setGridCell(prev_x, prev_y, "J ");
+            if (city.getGridCell(m_xPos, m_yPos) == ". ")
+            {
+                auto id_str{ to_string(m_id) };
+                if (id_str.size() == 1)
+                    id_str = "0" + id_str;
+                city.setGridCell(m_xPos, m_yPos, id_str);
             }
         }
     }
-}
 
-template <class Loot>
-int Robber<Loot>::getxPos()
-{
-    return xPos;
-}
+    int getTotalWorth() const
+    {
+        return m_totalWorth;
+    }
 
-template <class Loot>
-int Robber<Loot>::getyPos()
-{
-    return yPos;
-}
+    int getxPos() const
+    {
+        return m_xPos;
+    }
 
-template <class Loot>
-void Robber<Loot>::setCopy(bool copy)
-{
-    hasCopy = copy;
-}
+    int getyPos() const
+    {
+        return m_yPos;
+    }
 
-template <class Loot>
-bool Robber<Loot>::getCopy()
-{
-    return hasCopy;
-}
+    void setCopy(bool copy)
+    {
+        m_hasCopy = copy;
+    }
+
+    bool hasCopy() const
+    {
+        return m_hasCopy;
+    }
+
+private:
+    int m_id{};
+    int m_xPos{};
+    int m_yPos{};
+    int m_bagSize{};
+    bool m_isActive{};
+    bool m_isGreedy{};
+    bool m_hasCopy{};
+    Loot m_bag[MAX_CAPACITY]{};
+    int m_totalWorth{ 0 };
+    static inline int curr_robber_id{ 0 };
+};
 
 #endif

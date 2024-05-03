@@ -1,6 +1,10 @@
+#include <ranges>
+#include <string>
+
 #include "city.h"
 
-City::City() : m_jewelCount(60)
+City::City()
+    : m_jewelCount(60)
 {
     initializeGrid();
     scatterJewels();
@@ -8,44 +12,42 @@ City::City() : m_jewelCount(60)
 
 void City::initializeGrid()
 {
-    for (int i = 0; i < ROWS; i++)
+    for (int y = 0; y < ROWS; y++)
     {
-        for (int j = 0; j < COLS; j++)
-        {
-            m_grid[i][j] = '.';
-        }
+        for (int x = 0; x < COLS; x++)
+            this->setGridCell(x, y, ". ");
     }
 }
 
 void City::printGrid()
 {
-    for (int i = 0; i < ROWS; i++)
+    static const std::string separator(COLS * 3, '-');
+    cout << separator << endl;
+    for (int row = 0; row < ROWS; row++)
     {
-        for (int j = 0; j < COLS; j++)
-        {
-            cout << m_grid[i][j] << " ";
-        }
+        for (int col = 0; col < COLS; col++)
+            cout << m_grid[row][col] << " ";
         cout << endl;
     }
+    cout << separator << endl;
 }
 
 void City::scatterJewels()
 {
     int jewelsPlaced = 0;
 
-    while(jewelsPlaced < m_jewelCount){
-        int row = rand() % ROWS;
-        int col = rand() % COLS;
+    while (jewelsPlaced < m_jewelCount)
+    {
+        int x = rand() % COLS;
+        int y = rand() % ROWS;
 
-        if (m_grid[row][col] == '.')
+        if (this->getGridCell(x, y) == ". ")
         {
-            Jewel jewel(row, col);
-            m_grid[row][col] = 'J';
-
+            Jewel jewel(x, y);
+            this->setGridCell(x, y, "J ");
             jewelsPlaced++;
         }
     }
-
 }
 
 int City::getJewelCount()
@@ -53,11 +55,12 @@ int City::getJewelCount()
     return m_jewelCount;
 }
 
-char City::getGridCell(int row, int col) const
+std::string City::getGridCell(int x, int y) const
 {
-    return m_grid[row][col];
+    return m_grid[y][x];
 }
 
-void City::setGridCell(int row, int col, char value){
-    m_grid[row][col] = value;
+void City::setGridCell(int x, int y, std::string value)
+{
+    m_grid[y][x] = value;
 }

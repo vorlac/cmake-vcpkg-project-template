@@ -1,69 +1,70 @@
+#include <array>
+#include <cstdint>
+
 #include "city.h"
-#include "robber.h"
 #include "jewel.h"
+#include "robber.h"
 
 int main()
 {
-    srand(time(0));
+    srand(static_cast<uint32_t>(time(NULL)));
 
-    City city;
-    Jewel jewels[60];
+    City city{};
+    Jewel jewels[60]{};
 
-    int jewelIndex = 0;
-
-    city.printGrid();
-
-    for (int i = 0; i < ROWS; i++)
+    int jewelIndex{ 0 };
+    for (int y = 0; y < ROWS; y++)
     {
-        for (int j = 0; j < COLS; j++)
+        for (int x = 0; x < COLS; x++)
         {
-            if (city.getGridCell(i, j) == 'J')
+            if (city.getGridCell(x, y) == "J ")
             {
-                int x = j + 1;
-                int y = ROWS - i;
-                jewels[jewelIndex] = Jewel(x, y);
+                jewels[jewelIndex] = Jewel(x + 1, ROWS - y);
                 jewelIndex++;
             }
         }
     }
 
-    cout << "Value of Jewel 1: " << jewels[7].getValue();
-    cout << "Coordinates of Jewel are: " << jewels[7].getxPos() << " " << jewels[7].getyPos();
+    cout << "Value of Jewel 1: $" << jewels[7].getValue() << endl;
+    cout << "Coordinates of Jewel are: " << jewels[7].getxPos()
+         << " " << jewels[7].getyPos() << endl;
 
-    int num_robbers = 0;
-    int robberID = 1;
+    int robberID = 0;
     int turns = 0;
-    Robber<Jewel> robbers[20];
-    bool hasCopy = false;
+    std::array<Robber<Jewel>, 20> robbers{};
+    const auto& curr_robber{ robbers[robberID] };
+    city.setGridCell(curr_robber.getxPos(), curr_robber.getyPos(), "00");
+    city.printGrid();
 
-    while (turns < 5)
+    while (turns++ < 5)
     {
-        for (int i = 0; i < 20; i++)
+        for (auto turn_count = 0; turn_count < 20; ++turn_count)
         {
-            if (robbers[i].getTotalWorth() > 1600 && !robbers[i].getCopy())
+            if (robbers[robberID].getTotalWorth() > 1600 && !robbers[robberID].hasCopy())
             {
-                int p_rob = rand() % 11;
-                int r_rob = rand() % 13;
+                int x_rob = rand() % COLS;
+                int y_rob = rand() % ROWS;
 
-                robbers[i + 1] = Robber<Jewel>(++robberID, p_rob, r_rob);
-                robbers[i + 1].move(city);
-
+                ++robberID %= robbers.size();
+                robbers[robberID] = Robber<Jewel>(robberID, x_rob, y_rob);
+                robbers[robberID].move(city);
                 city.printGrid();
 
-                cout << "Total Worth of robber " << i << ": " << robbers[i + 1].getTotalWorth() << endl;
+                cout << "Total Worth of robber " << robberID
+                     << ": $" << robbers[robberID + 1].getTotalWorth()
+                     << endl;
 
-                robbers[i].setCopy(true);
+                robbers[robberID].setCopy(true);
             }
             else
             {
-
-                robbers[i].move(city);
-
+                robbers[robberID].move(city);
                 city.printGrid();
 
-                cout << "Total Worth of robber " << i << ": " << robbers[i].getTotalWorth() << endl;
+                cout << "Total Worth of robber " << robberID
+                     << ": $" << robbers[robberID].getTotalWorth()
+                     << endl;
             }
         }
-        turns++;
     }
 }

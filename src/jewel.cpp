@@ -1,13 +1,20 @@
 #include "jewel.h"
 
-Jewel::Jewel() : m_value(0), m_xPos(0), m_yPos(){};
-
-Jewel::Jewel(const int xPos, const int yPos) : m_xPos(xPos), m_yPos(yPos)
+Jewel::Jewel()
+    : m_value(0)
+    , m_xPos(0)
+    , m_yPos(0)
 {
-    m_value = (xPos + yPos) * (xPos + yPos);
 }
 
-Jewel Jewel::operator*(const int multiplier)
+Jewel::Jewel(const int xPos, const int yPos)
+    : m_xPos(xPos)
+    , m_yPos(yPos)
+    , m_value((xPos + yPos) * (xPos + yPos))
+{
+}
+
+Jewel Jewel::operator*(const int multiplier) const
 {
     Jewel result(m_xPos, m_yPos);
     result.m_value = m_value * multiplier;

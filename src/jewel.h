@@ -15,7 +15,7 @@ private:
 public:
     Jewel();
     Jewel(const int xPos, const int yPos);
-    Jewel operator*(const int multiplier);
+    Jewel operator*(const int multiplier) const;
     void operator*=(const int multiplier);
     int getValue() const;
     void setValue(int cost);

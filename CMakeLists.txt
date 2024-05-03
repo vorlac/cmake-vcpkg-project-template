@@ -24,7 +24,7 @@ project(myprogram
 option(
   AUTOFORMAT_SRC_ON_CONFIGURE
     "If enabled, clang-format will be used to format all sources in src/ during configuration"
-      OFF # ON
+      ON
 )
 
 string(TOLOWER "${CMAKE_SYSTEM_NAME}" host_os)
@@ -80,7 +80,7 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
 
 target_compile_options(${PROJECT_NAME} PRIVATE
   $<${compiler_is_msvc}:
-      /std:c++latest
+      #/std:c++latest
       /Zc:preprocessor
       /utf-8
       /EHsc

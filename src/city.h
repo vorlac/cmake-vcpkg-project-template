@@ -2,26 +2,26 @@
 #define HEIST_HEADER
 
 #include <cstdlib>
-#include <iostream>
+
 #include "jewel.h"
 using namespace std;
 
-static const int ROWS = 11;
-static const int COLS = 13;
+constexpr static int ROWS = 11;
+constexpr static int COLS = 13;
 
 class City
 {
 private:
-    char m_grid[ROWS][COLS];
-    int m_jewelCount;
+    std::string m_grid[ROWS][COLS]{};
+    int m_jewelCount{ 0 };
 
 public:
     City();
     void initializeGrid();
     void printGrid();
     void scatterJewels();
-    char getGridCell(int row, int col) const;
-    void setGridCell(int row, int col, char value);
+    std::string getGridCell(int x, int y) const;
+    void setGridCell(int x, int y, std::string value);
     int getJewelCount();
 };
 

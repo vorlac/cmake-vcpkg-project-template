@@ -3,8 +3,9 @@
 
 #include <cstdlib>
 #include <iostream>
-#include "robber.h"
+
 #include "city.h"
+#include "robber.h"
 using namespace std;
 
 class Police
@@ -19,7 +20,7 @@ private:
 public:
     Police();
     Police(int id, int xPos, int yPos);
-    void arrest(const Robber<Jewel> &robber);
+    void arrest(const Robber<Jewel>& robber);
     void move(City& city);
     int getLootWorth();
 };
