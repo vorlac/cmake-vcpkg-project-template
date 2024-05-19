@@ -24,7 +24,7 @@ project(myprogram
 option(
   AUTOFORMAT_SRC_ON_CONFIGURE
     "If enabled, clang-format will be used to format all sources in src/ during configuration"
-      ON
+     ON
 )
 
 string(TOLOWER "${CMAKE_SYSTEM_NAME}" host_os)
@@ -62,12 +62,13 @@ set(SDL2IMAGE_VENDORED OFF)
 find_package(PkgConfig REQUIRED)
 
 find_package(PNG REQUIRED)
-find_package(fmt CONFIG REQUIRED)
+find_package(FFMPEG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
 find_package(SDL2_image CONFIG REQUIRED)
 find_package(SDL2_ttf CONFIG REQUIRED)
 find_package(SDL2_mixer CONFIG REQUIRED)
 find_package(SDL2_net CONFIG REQUIRED)
+find_package(fmt CONFIG REQUIRED)
 
 file(GLOB_RECURSE
   project_sources
@@ -122,10 +123,6 @@ target_compile_options(${PROJECT_NAME} PRIVATE
   >
 )
 
-target_include_directories(${PROJECT_NAME}
-  PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src"
-)
-
 target_link_options(${PROJECT_NAME}
   PRIVATE
     $<${compiler_is_msvc}:
@@ -133,9 +130,19 @@ target_link_options(${PROJECT_NAME}
     >
 )
 
+target_include_directories(${PROJECT_NAME}
+  PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src"
+  PRIVATE ${FFMPEG_INCLUDE_DIRS}
+)
+
+target_link_directories(${PROJECT_NAME}
+    PRIVATE ${FFMPEG_LIBRARY_DIRS}
+)
+
 target_link_libraries(${PROJECT_NAME}
   PRIVATE fmt::fmt
   PRIVATE PNG::PNG
+  PRIVATE ${FFMPEG_LIBRARIES}
   PRIVATE $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
   PRIVATE $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
   PRIVATE $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>

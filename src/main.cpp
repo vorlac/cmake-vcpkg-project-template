@@ -7,11 +7,14 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_net.h>
 #include <SDL2/SDL_ttf.h>
+#include <libavcodec/avcodec.h>
 
 int main(int argc, char** argv)
 {
     using std::cerr;
     using std::endl;
+
+    AVCodec codec{};
 
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
     {

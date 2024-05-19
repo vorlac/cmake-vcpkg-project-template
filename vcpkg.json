@@ -18,6 +18,7 @@
         "sdl2-mixer",
         "sdl2-net",
         "pkgconf",
-        "libpng"
+        "libpng",
+        "ffmpeg"
     ]
 }
