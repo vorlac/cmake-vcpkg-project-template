@@ -1,23 +1,22 @@
-#include <cstdint>
+#include <array>
 #include <iostream>
+#include <span>
 #include <string_view>
 
 #include <fmt/color.h>
 #include <fmt/format.h>
-#include <fmt/std.h>
-#include <openssl/crypto.h>
+#include <fmt/ranges.h>
+#include <zmq.hpp>
 
 int main(int argc, char** argv)
 {
     constexpr std::string_view hi{ "hello world" };
     fmt::print(fmt::emphasis::blink | fmt::fg(fmt::color::coral), "{}\n", hi);
 
-    const uint32_t ssl_major{ OPENSSL_version_major() };
-    const uint32_t ssl_minor{ OPENSSL_version_minor() };
-    const uint32_t ssl_patch{ OPENSSL_version_patch() };
-
-    fmt::print(fmt::emphasis::underline | fmt::fg(fmt::color::beige),
-               "Using OpenSSL Version: {}.{}.{}\n", ssl_major, ssl_minor, ssl_patch);
+    auto buffer = std::array{ 1, 2, 3, 4 };
+    auto test = zmq::const_buffer(buffer.data(), buffer.size());
+    const int* data = reinterpret_cast<const int*>(test.data());
+    fmt::print("{}", std::span{ data, data + 4 });
 
     std::cin.get();
 

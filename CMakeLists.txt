@@ -37,7 +37,7 @@ set(compiler_is_gnu "$<CXX_COMPILER_ID:GNU>")
 set(compiler_is_clang "$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>>")
 
 find_package(fmt CONFIG REQUIRED)
-find_package(OpenSSL REQUIRED)
+find_package(cppzmq CONFIG REQUIRED)
 
 file(GLOB_RECURSE
   project_sources
@@ -98,8 +98,8 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
   PRIVATE fmt::fmt
-  PRIVATE OpenSSL::SSL
-  PRIVATE OpenSSL::Crypto
+  PRIVATE cppzmq
+  PRIVATE cppzmq-static
 )
 
 if (AUTOFORMAT_SRC_ON_CONFIGURE MATCHES ON)
@@ -107,15 +107,5 @@ if (AUTOFORMAT_SRC_ON_CONFIGURE MATCHES ON)
   # Scoped to src/*.[h]pp and src/*.[c]pp
   include(clang-format)
 endif()
-
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  PROPERTY VS_STARTUP_PROJECT
-    ${PROJECT_NAME}
-)
-
-set_property(TARGET ${PROJECT_NAME}
-  PROPERTY VS_DEBUGGER_ENVIRONMENT
-    "PATH=${CMAKE_CURRENT_INSTALL_DIR}/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}"
-)
 
 include(cmake-utils)
