@@ -35,7 +35,7 @@
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "cl",
                 "CMAKE_CXX_COMPILER": "cl",
-                "VCPKG_TARGET_TRIPLET": "x64-windows"
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static-md"
             },
             "vendor": {
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {

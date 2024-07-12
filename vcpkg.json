@@ -8,6 +8,12 @@
         "dav1d",
         "harfbuzz",
         "pkgconf",
-        "libpng"
+        "libpng",
+        "libwebp",
+        "libogg",
+        "libopusenc",
+        "libxmp",
+        "wavpack",
+        "tiff"
     ]
 }

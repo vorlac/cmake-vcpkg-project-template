@@ -36,24 +36,29 @@ set(compiler_is_msvc "$<CXX_COMPILER_ID:MSVC>")
 set(compiler_is_gnu "$<CXX_COMPILER_ID:GNU>")
 set(compiler_is_clang "$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>>")
 
-set(SDL_TESTS OFF)
-set(SDL_TEST_LIBRARY OFF)
+set(SDL_STATIC ON)
+set(SDL_SHARED OFF)
+set(BUILD_SHARED_LIBS OFF)
+
+set(SDL3IMAGE_DEPS_SHARED OFF)
+set(SDL3MIXER_DEPS_SHARED OFF)
+set(SDL3_DEPS_SHARED OFF)
 
 set(SDL_LIBC OFF)
-set(SDL_VULKAN ON)
-
-set(SDL_STATIC ON)
-set(SDL_SHARED ON)
 set(FORCE_STATIC_VCRT OFF)
-set(BUILD_SHARED_LIBS ON)
 
 set(SDL3TTF_VENDORED OFF)
 set(SDL3IMAGE_VENDORED OFF)
 set(SDL3MIXER_VENDORED OFF)
 
 find_package(PkgConfig REQUIRED)
-find_package(PNG REQUIRED)
 find_package(Freetype CONFIG REQUIRED)
+find_package(harfbuzz CONFIG REQUIRED)
+find_package(Ogg CONFIG REQUIRED)
+find_package(PNG REQUIRED)
+find_package(TIFF REQUIRED)
+find_package(wavpack CONFIG REQUIRED)
+find_package(WebP CONFIG REQUIRED)
 
 pkg_check_modules(dav1d REQUIRED IMPORTED_TARGET dav1d)
 
@@ -130,8 +135,6 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE SDL3_ttf::SDL3_ttf
     PRIVATE SDL3_image::SDL3_image
     PRIVATE SDL3_mixer::SDL3_mixer
-    PRIVATE Freetype::Freetype
-    PRIVATE PNG::PNG
 )
 
 if (AUTOFORMAT_SRC_ON_CONFIGURE MATCHES ON)
@@ -140,14 +143,11 @@ if (AUTOFORMAT_SRC_ON_CONFIGURE MATCHES ON)
   include(clang-format)
 endif()
 
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  PROPERTY VS_STARTUP_PROJECT
-    ${PROJECT_NAME}
-)
-
-set_property(TARGET ${PROJECT_NAME}
-  PROPERTY VS_DEBUGGER_ENVIRONMENT
-    "PATH=${CMAKE_CURRENT_INSTALL_DIR}/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}"
+add_custom_command(TARGET ${PROJECT_NAME}
+  PRE_BUILD COMMAND
+    ${CMAKE_COMMAND} -E copy_directory_if_different
+      ${CMAKE_CURRENT_SOURCE_DIR}/resources
+      $<TARGET_FILE_DIR:${PROJECT_NAME}>/resources
 )
 
 include(cmake-utils)

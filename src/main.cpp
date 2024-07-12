@@ -1,8 +1,9 @@
+#include <SDL3/SDL_main.h>
+//
 #include <cstdlib>
 #include <iostream>
 
 #include <SDL3/SDL.h>
-#include <SDL3/SDL_main.h>
 #include <SDL3_image/SDL_image.h>
 #include <SDL3_mixer/SDL_mixer.h>
 #include <SDL3_ttf/SDL_ttf.h>
@@ -32,7 +33,7 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    SDL_Renderer* ren = SDL_CreateRenderer(win, "opengl");
+    SDL_Renderer* ren = SDL_CreateRenderer(win, nullptr);
     if (ren == nullptr)
     {
         cerr << "SDL_CreateRenderer Error" << SDL_GetError() << endl;
