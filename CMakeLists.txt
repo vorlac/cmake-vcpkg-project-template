@@ -10,7 +10,7 @@ include(vcpkg-init)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_COLOR_DIAGNOSTICS ON)
 set(CMAKE_DIRECTORY_LABELS ON)
 
@@ -36,8 +36,31 @@ set(compiler_is_msvc "$<CXX_COMPILER_ID:MSVC>")
 set(compiler_is_gnu "$<CXX_COMPILER_ID:GNU>")
 set(compiler_is_clang "$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>>")
 
-find_package(fmt CONFIG REQUIRED)
-find_package(OpenSSL REQUIRED)
+set(SDL_TESTS OFF)
+set(SDL_TEST_LIBRARY OFF)
+
+set(SDL_LIBC OFF)
+set(SDL_VULKAN ON)
+
+set(SDL_STATIC ON)
+set(SDL_SHARED ON)
+set(FORCE_STATIC_VCRT OFF)
+set(BUILD_SHARED_LIBS ON)
+
+set(SDL3TTF_VENDORED OFF)
+set(SDL3IMAGE_VENDORED OFF)
+set(SDL3MIXER_VENDORED OFF)
+
+find_package(PkgConfig REQUIRED)
+find_package(PNG REQUIRED)
+find_package(Freetype CONFIG REQUIRED)
+
+pkg_check_modules(dav1d REQUIRED IMPORTED_TARGET dav1d)
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extern/sdl)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extern/sdl_ttf)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extern/sdl_image)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extern/sdl_mixer)
 
 file(GLOB_RECURSE
   project_sources
@@ -103,9 +126,12 @@ target_include_directories(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
-  PRIVATE fmt::fmt
-  PRIVATE OpenSSL::SSL
-  PRIVATE OpenSSL::Crypto
+    PRIVATE SDL3::SDL3
+    PRIVATE SDL3_ttf::SDL3_ttf
+    PRIVATE SDL3_image::SDL3_image
+    PRIVATE SDL3_mixer::SDL3_mixer
+    PRIVATE Freetype::Freetype
+    PRIVATE PNG::PNG
 )
 
 if (AUTOFORMAT_SRC_ON_CONFIGURE MATCHES ON)

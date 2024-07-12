@@ -1,3 +1,15 @@
 [submodule "vcpkg"]
 	path = extern/vcpkg
 	url = https://github.com/microsoft/vcpkg
+[submodule "extern/sdl_image"]
+	path = extern/sdl_image
+	url = https://github.com/libsdl-org/SDL_image.git
+[submodule "extern/sdl"]
+	path = extern/sdl
+	url = https://github.com/libsdl-org/SDL.git
+[submodule "extern/sdl_ttf"]
+	path = extern/sdl_ttf
+	url = https://github.com/libsdl-org/SDL_ttf.git
+[submodule "extern/sdl_mixer"]
+	path = extern/sdl_mixer
+	url = https://github.com/libsdl-org/SDL_mixer.git
