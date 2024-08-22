@@ -1,25 +1,30 @@
-#include <cstdint>
 #include <iostream>
-#include <string_view>
 
-#include <fmt/color.h>
-#include <fmt/format.h>
-#include <fmt/std.h>
-#include <openssl/crypto.h>
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/videoio.hpp>
 
-int main(int argc, char** argv)
+int main()
 {
-    constexpr std::string_view hi{ "hello world" };
-    fmt::print(fmt::emphasis::blink | fmt::fg(fmt::color::coral), "{}\n", hi);
+    cv::VideoCapture cam(0);
 
-    const uint32_t ssl_major{ OPENSSL_version_major() };
-    const uint32_t ssl_minor{ OPENSSL_version_minor() };
-    const uint32_t ssl_patch{ OPENSSL_version_patch() };
+    if (!cam.isOpened())
+    {
+        std::cout << "Couldn't open the camera.\n";
+        return 1;
+    }
 
-    fmt::print(fmt::emphasis::underline | fmt::fg(fmt::color::beige),
-               "Using OpenSSL Version: {}.{}.{}\n", ssl_major, ssl_minor, ssl_patch);
+    cv::Mat frame;
+    cam >> frame;
 
-    std::cin.get();
+    if (frame.empty())
+    {
+        std::cout << "Frame was empty.\n";
+        return 1;
+    }
 
-    return 0;
+    const char* window = "Show Me";
+    namedWindow(window, cv::WINDOW_AUTOSIZE);
+    imshow(window, frame);
+    cv::waitKey(0);
 }
