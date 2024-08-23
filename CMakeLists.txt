@@ -37,7 +37,7 @@ set(compiler_is_gnu "$<CXX_COMPILER_ID:GNU>")
 set(compiler_is_clang "$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>>")
 
 find_package(fmt CONFIG REQUIRED)
-find_package(OpenSSL REQUIRED)
+find_package(CURL REQUIRED)
 
 file(GLOB_RECURSE
   project_sources
@@ -104,8 +104,7 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
   PRIVATE fmt::fmt
-  PRIVATE OpenSSL::SSL
-  PRIVATE OpenSSL::Crypto
+  PRIVATE CURL::libcurl
 )
 
 if (AUTOFORMAT_SRC_ON_CONFIGURE MATCHES ON)

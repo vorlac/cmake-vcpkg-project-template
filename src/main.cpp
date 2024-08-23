@@ -2,24 +2,36 @@
 #include <iostream>
 #include <string_view>
 
+#include <curl/curl.h>
 #include <fmt/color.h>
 #include <fmt/format.h>
 #include <fmt/std.h>
-#include <openssl/crypto.h>
 
-int main(int argc, char** argv)
+static size_t callback(void* contents, size_t size, size_t nmemb, void* userp)
 {
-    constexpr std::string_view hi{ "hello world" };
-    fmt::print(fmt::emphasis::blink | fmt::fg(fmt::color::coral), "{}\n", hi);
+    ((std::string*)userp)->append((char*)contents, size * nmemb);
+    return size * nmemb;
+}
 
-    const uint32_t ssl_major{ OPENSSL_version_major() };
-    const uint32_t ssl_minor{ OPENSSL_version_minor() };
-    const uint32_t ssl_patch{ OPENSSL_version_patch() };
+int main(void)
+{
+    CURL* curl{ nullptr };
+    CURLcode res{};
 
-    fmt::print(fmt::emphasis::underline | fmt::fg(fmt::color::beige),
-               "Using OpenSSL Version: {}.{}.{}\n", ssl_major, ssl_minor, ssl_patch);
+    std::string buffer{};
 
-    std::cin.get();
+    curl = curl_easy_init();
+    if (curl)
+    {
+        curl_easy_setopt(curl, CURLOPT_URL, "http://www.google.com");
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+        res = curl_easy_perform(curl);
+        curl_easy_cleanup(curl);
+
+        std::cout << buffer << std::endl;
+        std::cout << res << std::endl;
+    }
 
     return 0;
 }
