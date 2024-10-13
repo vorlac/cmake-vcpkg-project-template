@@ -74,6 +74,8 @@ file(GLOB_RECURSE
     CONFIGURE_DEPENDS
       "${CMAKE_CURRENT_SOURCE_DIR}/src/*.[hc]"
       "${CMAKE_CURRENT_SOURCE_DIR}/src/*.[hc]pp"
+      "${CMAKE_CURRENT_SOURCE_DIR}/include/*.[hc]"
+      "${CMAKE_CURRENT_SOURCE_DIR}/include/*.[hc]pp"
 )
 
 add_executable(${PROJECT_NAME}
@@ -93,18 +95,6 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
   $<${compiler_is_msvc}:
       WIN32_LEAN_AND_MEAN
       VC_EXTRALEAN
-
-      $<$<CONFIG:Debug>:
-          # debug only msvc defs
-      >
-  >
-
-  $<${compiler_is_gnu}:
-      # gcc defs here
-  >
-
-  $<${compiler_is_clang}:
-      # clang defs here
   >
 )
 
@@ -116,14 +106,11 @@ target_compile_options(${PROJECT_NAME} PRIVATE
       /EHsc
       /nologo
   >
-
-  $<$<CONFIG:Release>:
-      /Ox
-  >
 )
 
 target_include_directories(${PROJECT_NAME}
   PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src"
+  PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include/headers"
 )
 
 target_link_options(${PROJECT_NAME}
@@ -145,26 +132,14 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 if (AUTOFORMAT_SRC_ON_CONFIGURE MATCHES ON)
-  # Formatting rules defined by .clangformat
-  # Scoped to src/*.[h]pp and src/*.[c]pp
-  include(clang-format)
+    include(clang-format)
 endif()
-
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  PROPERTY VS_STARTUP_PROJECT
-    ${PROJECT_NAME}
-)
-
-set_property(TARGET ${PROJECT_NAME}
-  PROPERTY VS_DEBUGGER_ENVIRONMENT
-    "PATH=${CMAKE_CURRENT_INSTALL_DIR}/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}"
-)
 
 add_custom_command(TARGET ${PROJECT_NAME}
   PRE_BUILD COMMAND
-    ${CMAKE_COMMAND} -E copy_if_different
-      ${CMAKE_CURRENT_SOURCE_DIR}/resources
-      $<TARGET_FILE_DIR:${PROJECT_NAME}>/resources
+    ${CMAKE_COMMAND} -E create_symlink
+      ${CMAKE_CURRENT_SOURCE_DIR}/assets
+      $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets
 )
 
 include(cmake-utils)

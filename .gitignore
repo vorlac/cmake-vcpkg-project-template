@@ -1,4 +1,20 @@
+log/
+
 .out/
+.cache/
+cmake-build-*/
+compile_commands.json
+
+export.cfg
+export_presets.cfg
+D0_Snippets.as
+
+imgui.ini
+*.translation
+*.obj
+
+**/bin/*
+!**/bin/*.gdextension
 
 .vs/**
 !.vs/launch.vs.json

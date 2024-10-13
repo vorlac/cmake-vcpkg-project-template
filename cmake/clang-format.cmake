@@ -16,6 +16,8 @@ if (CLANG_FORMAT_PROGRAM)
         "${CMAKE_CURRENT_SOURCE_DIR}"
           "src/*.[hc]"
           "src/*.[hc]pp"
+          "include/*.[hc]"
+          "include/*.[hc]pp"
     )
 
     foreach(_src_file ${format_src_list})

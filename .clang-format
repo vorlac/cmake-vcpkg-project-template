@@ -1,62 +1,60 @@
 ---
 Language: Cpp
 AccessModifierOffset: -4
-AlignAfterOpenBracket: Align
-AlignArrayOfStructures: None
+AlignAfterOpenBracket: Align # [AlwaysBreak, DontAlign, BlockIndent, Align]
+AlignArrayOfStructures: None # [None, Left, Right]
 AlignConsecutiveMacros: AcrossComments
-AlignConsecutiveAssignments: None
+AlignConsecutiveAssignments: None # [Consecutive, None]
 AlignConsecutiveBitFields: Consecutive
 AlignConsecutiveDeclarations: None
 AlignEscapedNewlines: Left
-AlignOperands: AlignAfterOperator
+AlignOperands: AlignAfterOperator # Align
 AlignTrailingComments: true
 AllowAllArgumentsOnNextLine: false
 AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortEnumsOnASingleLine: false
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: false # [InlineOnly, true]
 AllowShortLambdasOnASingleLine: false
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
+AllowShortCompoundRequirementOnASingleLine: true # clang-format v18 requrired
 AlwaysBreakAfterDefinitionReturnType: false
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: true
 AlwaysBreakTemplateDeclarations: true
 BreakAfterAttributes: Leave
-AttributeMacros:
-  - __capability
 BinPackArguments: true
 BinPackParameters: true
 BreakBeforeBraces: Custom
 BraceWrapping:
-  AfterCaseLabel: true
-  AfterClass: true
-  AfterControlStatement: Always
+  AfterCaseLabel: false
+  AfterClass: false
+  AfterControlStatement: false
   AfterEnum: false
-  AfterFunction: true
+  AfterFunction: false
   AfterNamespace: false
-  AfterObjCDeclaration: true
-  AfterStruct: true
-  AfterUnion: true
+  AfterStruct: false
+  AfterUnion: false
   AfterExternBlock: true
-  BeforeCatch: true
+  BeforeCatch: false
   BeforeElse: true
   BeforeLambdaBody: false
-  BeforeWhile: true
+  BeforeWhile: false
   IndentBraces: false
-  SplitEmptyFunction: true
-  SplitEmptyRecord: true
-  SplitEmptyNamespace: true
-BreakBeforeBinaryOperators: None
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+BreakBeforeBinaryOperators: None # NonAssignment # All
 BreakBeforeConceptDeclarations: true
 BreakBeforeInheritanceComma: true
 BreakInheritanceList: AfterComma
-BreakBeforeTernaryOperators: true
+BreakBeforeTernaryOperators: true # false
 BreakConstructorInitializersBeforeComma: true
 BreakConstructorInitializers: BeforeColon
 BreakStringLiterals: false
-ColumnLimit: 100
+ColumnLimit: 0
 CommentPragmas: "^ IWYU pragma:"
 CompactNamespaces: false
 ConstructorInitializerIndentWidth: 4
@@ -72,12 +70,6 @@ PackConstructorInitializers: Never
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 AllowAllConstructorInitializersOnNextLine: true
 FixNamespaceComments: false
-ForEachMacros:
-  - foreach
-  - Q_FOREACH
-  - BOOST_FOREACH
-IfMacros:
-  - KJ_IF_MAYBE
 IncludeBlocks: Regroup
 IncludeCategories:
   - Regex: '(<glad[/0-9a-z_-]*\.h[p]?[p]?>)'
@@ -111,11 +103,9 @@ IndentExternBlock: AfterExternBlock
 IndentRequires: true
 IndentWidth: 4
 IndentWrappedFunctionNames: false
-InsertTrailingCommas: None
+InsertTrailingCommas: None # [None, Wrapped] ==> trailing comma insertion cannot be used with bin packing
 KeepEmptyLinesAtTheStartOfBlocks: false
 LambdaBodyIndentation: Signature
-MacroBlockBegin: ""
-MacroBlockEnd: ""
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: All
 PenaltyBreakAssignment: 1000
@@ -131,13 +121,13 @@ PenaltyIndentedWhitespace: 0
 PointerAlignment: Left
 PPIndentWidth: 2
 QualifierAlignment: Custom
-QualifierOrder: ["constexpr", "const", "static", "inline", "volatile", "type"]
+QualifierOrder: ["constexpr", "static", "inline", "volatile", "const", "type"]
 ReferenceAlignment: Pointer
 ReflowComments: true
-RemoveBracesLLVM: true
-RemoveParentheses: ReturnStatement
+RemoveBracesLLVM: false
+RemoveParentheses: Leave
 RequiresClausePosition: OwnLine
-SeparateDefinitionBlocks: Always
+SeparateDefinitionBlocks: Always # Leave
 ShortNamespaceLines: 1
 SortIncludes: true
 SortUsingDeclarations: true
@@ -176,12 +166,7 @@ SpaceBeforeSquareBrackets: false
 BitFieldColonSpacing: Both
 Standard: Latest
 TabWidth: 4
-UseCRLF: false
+LineEnding: LF
 UseTab: Never
 WhitespaceSensitiveMacros:
-  - STRINGIZE
-  - PP_STRINGIZE
-  - BOOST_PP_STRINGIZE
-  - NS_SWIFT_NAME
-  - CF_SWIFT_NAME
   - R
