@@ -1,0 +1,6 @@
+{
+    "C_Cpp.codeAnalysis.clangTidy.path": "clang-tidy",
+    "C_Cpp.codeAnalysis.clangTidy.useBuildPath": true,
+    "C_Cpp.codeAnalysis.clangTidy.enabled": true,
+    "C_Cpp.debugShortcut": false
+}

@@ -37,7 +37,7 @@ set(compiler_is_gnu "$<CXX_COMPILER_ID:GNU>")
 set(compiler_is_clang "$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>>")
 
 find_package(fmt CONFIG REQUIRED)
-find_package(OpenSSL REQUIRED)
+find_package(SFML COMPONENTS system window graphics audio CONFIG REQUIRED)
 
 file(GLOB_RECURSE
   project_sources
@@ -68,14 +68,6 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
           # debug only msvc defs
       >
   >
-
-  $<${compiler_is_gnu}:
-      # gcc defs here
-  >
-
-  $<${compiler_is_clang}:
-      # clang defs here
-  >
 )
 
 target_compile_options(${PROJECT_NAME} PRIVATE
@@ -86,15 +78,15 @@ target_compile_options(${PROJECT_NAME} PRIVATE
       /EHsc
       /nologo
       /UNICODE
-  >
 
-  $<$<CONFIG:Release>:
-      /Ox
-      /MD
-  >
+      $<$<CONFIG:Release>:
+          /Ox
+          /MD
+      >
 
-  $<$<CONFIG:Debug>:
-      /MDd
+      $<$<CONFIG:Debug>:
+          /MDd
+      >
   >
 )
 
@@ -102,10 +94,13 @@ target_include_directories(${PROJECT_NAME}
   PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src"
 )
 
-target_link_libraries(${PROJECT_NAME}
-  PRIVATE fmt::fmt
-  PRIVATE OpenSSL::SSL
-  PRIVATE OpenSSL::Crypto
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    fmt::fmt
+    sfml-system
+    sfml-network
+    sfml-graphics
+    sfml-window
+    sfml-audio
 )
 
 if (AUTOFORMAT_SRC_ON_CONFIGURE MATCHES ON)

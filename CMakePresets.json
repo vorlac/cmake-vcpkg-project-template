@@ -18,6 +18,10 @@
             },
             "environment": {
                 "NINJA_STATUS": "%p [%es] (%f/%t)  -"
+            },
+            "cacheVariables": {
+                "BUILD_SHARED_LIBS": "OFF",
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static-md"
             }
         },
         {
@@ -34,8 +38,7 @@
             "hidden": true,
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "cl",
-                "CMAKE_CXX_COMPILER": "cl",
-                "VCPKG_TARGET_TRIPLET": "x64-windows-static-md"
+                "CMAKE_CXX_COMPILER": "cl"
             },
             "vendor": {
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -79,13 +82,7 @@
             "hidden": true,
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "gcc",
-                "CMAKE_CXX_COMPILER": "g++",
-                "VCPKG_TARGET_TRIPLET": "x64-linux"
-            },
-            "condition": {
-                "type": "notEquals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Windows"
+                "CMAKE_CXX_COMPILER": "g++"
             }
         },
         {
@@ -119,11 +116,6 @@
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "clang",
                 "CMAKE_CXX_COMPILER": "clang++"
-            },
-            "condition": {
-                "type": "notEquals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Windows"
             }
         },
         {
@@ -156,8 +148,7 @@
             "hidden": true,
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "clang-cl",
-                "CMAKE_CXX_COMPILER": "clang-cl",
-                "VCPKG_TARGET_TRIPLET": "x64-windows-static-md"
+                "CMAKE_CXX_COMPILER": "clang-cl"
             },
             "vendor": {
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {

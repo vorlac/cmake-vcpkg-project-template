@@ -1,12 +1,13 @@
 {
-  "version": "0.2.1",
-  "configurations": [
-    {
-      "args": [ ],
-      "isDefaultConfiguration": true,
-      "name": "myprogram",
-      "project": "CMakeLists.txt",
-      "type": "default"
-    }
-  ]
+	"version": "0.2.1",
+	"configurations": [
+		{
+			"args": [ "--server" ],
+			"isDefaultConfiguration": true,
+			"name": "myprogram",
+			"project": "CMakeLists.txt",
+			"type": "default",
+			"deployDebugRuntimeLibraries": true
+		}
+	]
 }
