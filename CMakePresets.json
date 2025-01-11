@@ -7,7 +7,29 @@
             "generator": "Ninja",
             "installDir": "${sourceDir}/.out/install/${presetName}",
             "binaryDir": "${sourceDir}/.out/build/${presetName}",
-            "toolchainFile": "${sourceDir}/extern/vcpkg/scripts/buildsystems/vcpkg.cmake",
+            "environment": {
+                "NINJA_STATUS": "%p [%es] (%f/%t)  -",
+                "VERBOSE": "true"
+            }
+        },
+        {
+            "name": "win32",
+            "hidden": true,
+            "environment": {
+                "VERBOSE": "true"
+            },
+            "architecture": {
+                "value": "x86",
+                "strategy": "external"
+            },
+            "toolset": {
+                "value": "host=x86",
+                "strategy": "external"
+            }
+        },
+        {
+            "name": "win64",
+            "hidden": true,
             "architecture": {
                 "value": "x64",
                 "strategy": "external"
@@ -15,187 +37,62 @@
             "toolset": {
                 "value": "host=x64",
                 "strategy": "external"
-            },
-            "environment": {
-                "NINJA_STATUS": "%p [%es] (%f/%t)  -"
             }
         },
         {
-            "name": "default-verbose",
-            "inherits": "default",
-            "hidden": true,
-            "environment": {
-                "VERBOSE": "true"
-            }
-        },
-        {
-            "name": "msvc",
-            "inherits": "default",
+            "name": "msvc-x64",
+            "inherits": [
+                "default",
+                "win64"
+            ],
             "hidden": true,
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "cl",
-                "CMAKE_CXX_COMPILER": "cl",
-                "VCPKG_TARGET_TRIPLET": "x64-windows-static-md"
-            },
-            "vendor": {
-                "microsoft.com/VisualStudioSettings/CMake/1.0": {
-                    "enableMicrosoftCodeAnalysis": true,
-                    "intelliSenseMode": "windows-msvc-x64"
-                }
-            },
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Windows"
+                "CMAKE_CXX_COMPILER": "cl"
             }
         },
         {
-            "displayName": "MSVC Debug",
-            "name": "msvc-debug",
-            "inherits": "msvc",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
-            }
-        },
-        {
-            "displayName": "MSVC Release",
-            "name": "msvc-release",
-            "inherits": "msvc",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release"
-            }
-        },
-        {
-            "displayName": "MSVC RelWithDebInfo",
-            "name": "msvc-relwdebinfo",
-            "inherits": "msvc",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
-            }
-        },
-        {
-            "name": "gcc",
-            "inherits": "default",
+            "name": "msvc-x86",
+            "inherits": [
+                "default",
+                "win32"
+            ],
             "hidden": true,
             "cacheVariables": {
-                "CMAKE_C_COMPILER": "gcc",
-                "CMAKE_CXX_COMPILER": "g++",
-                "VCPKG_TARGET_TRIPLET": "x64-linux"
-            },
-            "condition": {
-                "type": "notEquals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Windows"
+                "CMAKE_C_COMPILER": "cl",
+                "CMAKE_CXX_COMPILER": "cl"
             }
         },
         {
-            "displayName": "GCC Debug",
-            "name": "gcc-debug",
-            "inherits": "gcc",
+            "displayName": "MSVC Debug | x64",
+            "name": "msvc-debug-x64",
+            "inherits": "msvc-x64",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug"
             }
         },
         {
-            "displayName": "GCC Release",
-            "name": "gcc-release",
-            "inherits": "gcc",
+            "displayName": "MSVC Release | x64",
+            "name": "msvc-release-x64",
+            "inherits": "msvc-x64",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
         },
         {
-            "displayName": "GCC RelWithDebInfo",
-            "name": "gcc-relwdebinfo",
-            "inherits": "gcc",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
-            }
-        },
-        {
-            "name": "clang",
-            "inherits": "default",
-            "hidden": true,
-            "cacheVariables": {
-                "CMAKE_C_COMPILER": "clang",
-                "CMAKE_CXX_COMPILER": "clang++"
-            },
-            "condition": {
-                "type": "notEquals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Windows"
-            }
-        },
-        {
-            "displayName": "Clang Debug",
-            "name": "clang-debug",
-            "inherits": "clang",
+            "displayName": "MSVC Debug | x86",
+            "name": "msvc-debug-x86",
+            "inherits": "msvc-x86",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug"
             }
         },
         {
-            "displayName": "Clang Release",
-            "name": "clang-release",
-            "inherits": "clang",
+            "displayName": "MSVC Release | x86",
+            "name": "msvc-release-x86",
+            "inherits": "msvc-x86",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
-            }
-        },
-        {
-            "displayName": "Clang RelWithDebInfo",
-            "name": "clang-relwdebinfo",
-            "inherits": "clang",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
-            }
-        },
-        {
-            "name": "clang-cl",
-            "inherits": "default",
-            "hidden": true,
-            "cacheVariables": {
-                "CMAKE_C_COMPILER": "clang-cl",
-                "CMAKE_CXX_COMPILER": "clang-cl",
-                "VCPKG_TARGET_TRIPLET": "x64-windows-static-md"
-            },
-            "vendor": {
-                "microsoft.com/VisualStudioSettings/CMake/1.0": {
-                    "enableClangTidyCodeAnalysis": true,
-                    "intelliSenseMode": "windows-clang-x64",
-                    "intelliSenseOptions": {
-                        "useCompilerDefaults": false
-                    }
-                }
-            },
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Windows"
-            }
-        },
-        {
-            "displayName": "ClangCL Debug",
-            "name": "clang-cl-debug",
-            "inherits": "clang-cl",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
-            }
-        },
-        {
-            "displayName": "ClangCL Release",
-            "name": "clang-cl-release",
-            "inherits": "clang-cl",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release"
-            }
-        },
-        {
-            "displayName": "ClangCL RelWithDebInfo",
-            "name": "clang-cl-relwdebinfo",
-            "inherits": "clang-cl",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
             }
         }
     ]
