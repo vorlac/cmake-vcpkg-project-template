@@ -137,7 +137,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE
 target_include_directories(${PROJECT_NAME} PRIVATE
   "${CMAKE_SOURCE_DIR}/src"
   "${CMAKE_SOURCE_DIR}/extern/libscrypt"
-  "${Boost_INCLUDE_DIR}"
+  "${Boost_INCLUDE_DIRS}"
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
