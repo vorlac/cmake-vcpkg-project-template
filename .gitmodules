@@ -1,3 +1,18 @@
 [submodule "vcpkg"]
 	path = extern/vcpkg
 	url = https://github.com/microsoft/vcpkg
+[submodule "extern/hunter"]
+	path = extern/hunter
+	url = https://github.com/ruslo/hunter.git
+[submodule "extern/etherium-cable"]
+	path = extern/etherium-cable
+	url = https://github.com/ethereum/cable.git
+[submodule "extern/etherium-evmc"]
+	path = extern/etherium-evmc
+	url = https://github.com/ethereum/evmc.git
+[submodule "extern/libscrypt"]
+	path = extern/libscrypt
+	url = https://github.com/technion/libscrypt.git
+[submodule "extern/etherium-ethash"]
+	path = extern/etherium-ethash
+	url = https://github.com/ethereum/ethash.git
