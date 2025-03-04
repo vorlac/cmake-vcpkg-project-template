@@ -57,55 +57,13 @@ target_compile_features(${PROJECT_NAME} PRIVATE
     cxx_std_23
 )
 
-target_compile_definitions(${PROJECT_NAME} PRIVATE
-  NOMINMAX
-
-  $<${compiler_is_msvc}:
-      WIN32_LEAN_AND_MEAN
-      VC_EXTRALEAN
-
-      $<$<CONFIG:Debug>:
-          # debug only msvc defs
-      >
-  >
-
-  $<${compiler_is_gnu}:
-      # gcc defs here
-  >
-
-  $<${compiler_is_clang}:
-      # clang defs here
-  >
-)
-
-target_compile_options(${PROJECT_NAME} PRIVATE
-  $<${compiler_is_msvc}:
-      /std:c++latest
-      /Zc:preprocessor
-      /utf-8
-      /EHsc
-      /nologo
-      /UNICODE
-  >
-
-  $<$<CONFIG:Release>:
-      /Ox
-      /MD
-  >
-
-  $<$<CONFIG:Debug>:
-      /MDd
-  >
-)
-
 target_include_directories(${PROJECT_NAME}
   PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src"
 )
 
 target_link_libraries(${PROJECT_NAME}
   PRIVATE fmt::fmt
-  PRIVATE OpenSSL::SSL
-  PRIVATE OpenSSL::Crypto
+  PRIVATE xieite
 )
 
 if (AUTOFORMAT_SRC_ON_CONFIGURE MATCHES ON)
